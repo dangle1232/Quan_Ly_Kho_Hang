@@ -6,6 +6,7 @@ import time
 import os
 import tempfile
 class BillClass:
+    
     def __init__(self, root):
         self.root = root
         self.root.geometry('1350x768+0+0')
@@ -18,7 +19,7 @@ class BillClass:
         self.icon_title = Image.open("images/qtc.png")
         self.icon_title = self.icon_title.resize((90, 40), Image.LANCZOS)
         self.icon_title = ImageTk.PhotoImage(self.icon_title)
-        title = Label(self.root, text="Quản Lý Kho Công Ty QTC", image=self.icon_title, compound=LEFT,
+        title = Label(self.root, text="Management Inventory Company QTC", image=self.icon_title, compound=LEFT,
                       font=("times new roman", 40, "bold"), bg="#010c48", fg="white", anchor="w", padx=30)
         title.place(x=0, y=0, relwidth=1, height=70)
 
@@ -96,7 +97,6 @@ class BillClass:
         lbl_name= Label(CustomerFrame,text="Name",font=("times new roman",15,"bold"),bg="white").place(x=5,y=35)
         
         txt_name=Entry(CustomerFrame,textvariable=self.var_cname,font=("times new roman",15,"bold"),bg="lightyellow").place(x=80,y=35,width=180)
-        
         lbl_contact= Label(CustomerFrame,text="Contact",font=("times new roman",15,"bold"),bg="white").place(x=270,y=35)
         
         txt_contact=Entry(CustomerFrame,textvariable=self.var_contact,font=("times new roman",15,"bold"),bg="lightyellow").place(x=380,y=35,width=140)
@@ -174,7 +174,7 @@ class BillClass:
         
         Add_CartWidgetsFrame.place(x=420,y=550,width=530,height=110)
         
-        lbl_p_name =Label(Add_CartWidgetsFrame,text="Product Name", font=("times new roman",15,"bold"),bg="white").place(x=5,y=5)
+        self.lbl_p_name =Label(Add_CartWidgetsFrame,text="Product Name", font=("times new roman",15,"bold"),bg="white").place(x=5,y=5)
         txt_p_name =Entry(Add_CartWidgetsFrame,textvariable=self.var_pname, font=("times new roman",15,),bg="lightyellow",state='readonly').place(x=5,y=35,width=190,height=22)
         
         lbl_price_qty =Label(Add_CartWidgetsFrame,text="Price per Qty", font=("times new roman",15,"bold"),bg="white").place(x=230,y=5)
@@ -212,7 +212,7 @@ class BillClass:
         self.lbl_discount= Label(billMenuFrame,text="Discount\n [5%]",font=("goudy old style ",15,"bold"),bg="#8bc34a",fg="white")
         self.lbl_discount.place(x=124,y=5,width=120,height=70)
         
-        self.lbl_net_pay= Label(billMenuFrame,text="Net Pay\n [0]",font=("goudy old style ",15,"bold"),bg="#607d8b",fg="white")
+        self.lbl_net_pay= Label(billMenuFrame,text="Total Price\n [0]",font=("goudy old style ",15,"bold"),bg="#607d8b",fg="white")
         self.lbl_net_pay.place(x=246,y=5,width=160,height=70)
         
         btn_print= Button(billMenuFrame,text="Print",cursor="hand2",command=self.print_bill,font=("goudy old style ",15,"bold"),bg="lightgreen",fg="white")
@@ -231,7 +231,6 @@ class BillClass:
         #self.bill_top()
         self.update_date_time()
         #==================All Functon===============
-        
     def get_input(self,num):
         xnum=self.var_cal_input.get()+str(num)
         self.var_cal_input.set(xnum)
@@ -273,7 +272,7 @@ class BillClass:
 
         except Exception as ex:
             messagebox.showerror("Error", f"An error occurred: {str(ex)}", parent=self.root)  
-            
+     
     def get_data(self,ev):
              f=self.productTable.focus()
              content=(self.productTable.item(f))
@@ -346,7 +345,7 @@ class BillClass:
             self.discount=(self.bill_amnt*5)/100
             self.net_pay=self.bill_amnt-self.discount
             self.lbl_amnt.config(text=f'Bill Amnt\n[{str(self.bill_amnt)}]')
-            self.lbl_net_pay.config(text=f'Net Pay\n[{str(self.net_pay)}]')
+            self.lbl_net_pay.config(text=f'Total Price\n[{str(self.net_pay)}]')
             self.cartTitle.config(text=f"Cart \t Total Product: [{str(len(self.cart_list))}]")
             
 
@@ -385,7 +384,7 @@ class BillClass:
     def bill_top(self):
         self.invoice = int(time.strftime("%H%M%S")) + int(time.strftime("%d%m%Y"))
         bill_top_temp = f'''
-\t\tXYZ-Inventory
+\t\tQuoc Thuan Company
 \t Phone No. 09090909, Bien Hoa
 {str("=" * 47)}
 Customer Name: {self.var_cname.get()}
@@ -402,7 +401,7 @@ Product Name\t\t\tQty\tPrice
 {str("="*47)}
 Bill Amount\t\t\t\t{self.bill_amnt} VND
 Discount\t\t\t\t{self.discount} VND
-Net Pay\t\t\t\t{self.net_pay} VND
+Total Price\t\t\t\t{self.net_pay} VND
 {str("="*47)}\n
       '''
         self.txt_bill_area.insert(END,bill_bottom_temp)
@@ -479,12 +478,6 @@ Net Pay\t\t\t\t{self.net_pay} VND
         self.root.destroy()
         os.system("python login.py")
             
-             
-            
-                    
-        
-        
-
 if __name__ == "__main__":
     root = Tk()
     obj = BillClass(root)

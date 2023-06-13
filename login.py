@@ -19,12 +19,17 @@ class Login_System:
         # Login Frame
         self.employee_id = StringVar()
         self.password = StringVar()
+        self.show_password = BooleanVar(value=False)  # Variable to store password visibility state
         
         login_frame = Frame(self.root, bd=2, relief=RIDGE, bg="#e6e6e6")
-        login_frame.place(x=510, y=90, width=350, height=460)
+        login_frame.place(x=510, y=90, width=370, height=460)
         
-        title = Label(login_frame, text="Login System", font=("Elephant", 30, "bold"), bg="white", fg="#333333")
-        title.place(x=40, y=100)
+        
+        title = Label(login_frame, text="Welcome! Please Login", font=("Arial", 20, "bold"), bg="white", fg="blue")
+        title.place(x=30, y=50)
+        
+        title = Label(login_frame, text="Login System", font=("Elephant", 15, "bold"), bg="white", fg="#333333")
+        title.place(x=120, y=140)
         
         lbl_user = Label(login_frame, text="Employee ID:", font=("Andalus", 15), bg="#e6e6e6", fg="#333333")
         lbl_user.place(x=20, y=200)
@@ -35,14 +40,17 @@ class Login_System:
         lbl_pass = Label(login_frame, text="Password:", font=("Andalus", 15), bg="#e6e6e6", fg="#333333")
         lbl_pass.place(x=20, y=250)
         
-        txt_password = Entry(login_frame, textvariable=self.password, font=("Times New Roman", 12), show="*")
-        txt_password.place(x=150, y=250)
+        self.txt_password = Entry(login_frame, textvariable=self.password, font=("Times New Roman", 12), show="*")
+        self.txt_password.place(x=150, y=250)
+        
+        btn_show_password = Button(login_frame, text="Show Password", font=("Arial", 12), bg="#2196f3", fg="white", command=self.toggle_password_visibility)
+        btn_show_password.place(x=5, y=300, width=120)
         
         btn_login = Button(login_frame, text="Log In", font=("Arial", 12), bg="#4caf50", fg="white", command=self.login)
-        btn_login.place(x=150, y=300)
+        btn_login.place(x=130, y=300, width=90)
         
         btn_forgot = Button(login_frame, text="Forgot Password", font=("Arial", 12), bg="#f44336", fg="white", command=self.forgot_password)
-        btn_forgot.place(x=110, y=350)
+        btn_forgot.place(x=225, y=300, width=140)
     
     def login(self):
         con = sqlite3.connect(database=r'qtc.db')
@@ -64,6 +72,21 @@ class Login_System:
                         os.system("python billing.py")
         except Exception as ex:
             messagebox.showerror("Error", f"Error due to: {str(ex)}", parent=self.root)
+    
+    def toggle_password_visibility(self):
+        if self.show_password.get():
+            # If password is currently visible, hide it
+            self.show_password.set(False)
+        else:
+            # If password is currently hidden, show it
+            self.show_password.set(True)
+        
+        if self.show_password.get():
+            # Show password
+            self.txt_password.config(show="")
+        else:
+            # Hide password
+            self.txt_password.config(show="*")
     
     def forgot_password(self):
         # Implement the logic for the "Forgot Password" functionality here
